@@ -1,10 +1,8 @@
-import { queryAllByTitle } from '@testing-library/react';
 import { useState } from 'react'
 import './App.css';
 
-function Todo () {
-  
-  const arr = [
+
+const arr = [
 	{
 		id: 1,
 		author: 'Саша Печкин',
@@ -26,36 +24,30 @@ function Todo () {
 		text: 'Бесплатно. Без смс, про реакт, заходи - https://maxpfrontend.ru'
 		}];
 
-  const [list, setList] = useState(arr);
-  const state = <div>{list.map((item) => <div key={item.id} onClick={() => remItem(item.id)}> <p>{item.author}:</p> <p>{item.text}</p></div>)}</div>;
-  
-  const [value, setValue] = useState('');
-	function enteryNumber(event) {
-		setValue(event.target.value);
-	}
+function Todo () {
 
-	const remItem = (index) => {
-	setList([...list.slice(0, index), ...list.slice(index + 1)]);
-	
-	};
+  const [list, setList] = useState(arr);
+
+  const [value, setValue] = useState('');
+
+  const remItem = (index) =>  () =>  {setList([...list.slice(0, index), ...list.slice(index + 1)]);};
+
+  function enteryNumber(event) {
+	  setValue(event.target.value);
+  };
 
   const handleChangeString = () => {
-    setList([...list, {id:value, author:value, text:value}]);
+    setList([...list, {author:value}]);
     setValue('');
-	
   };
 
   return (
    <div className="App">
-      <div> {state}</div>
+      <div> {list.map((item, index) => <div key={index} onClick={remItem(index)}><p>{item.author}</p></div>)}</div>
         <input onChange={enteryNumber} value={value} />
         <button onClick={handleChangeString}>Добавить в список</button>
-		
     </div>
-  );
-
-  
-}
+  );}
 
 
 export default Todo;
